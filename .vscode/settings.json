@@ -1,0 +1,14 @@
+{
+    "python.pythonPath": "C:\\Users\\sy43\\envs\\django-be\\Scripts\\python.exe",
+    "python.formatting.provider": "autopep8",
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        "./app",
+        "-p",
+        "*test*.py"
+    ],
+    "python.testing.pyTestEnabled": false,
+    "python.testing.nosetestsEnabled": false,
+    "python.testing.unittestEnabled": true
+}
