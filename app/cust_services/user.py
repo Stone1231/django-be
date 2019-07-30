@@ -1,7 +1,8 @@
 from django.db import transaction
 from ..cust_models.user import *
 from datetime import datetime
-
+from ..library.exceptions import CustomAPIException
+from rest_framework import status
 
 class UserService(object):
     @staticmethod
@@ -26,7 +27,8 @@ class UserService(object):
                     mapping.save()
                                     
         except Exception as e:
-            print(repr(e))
+            raise CustomAPIException(
+                detail=repr(e))            
         else:
             print("user init success!")
 
@@ -37,8 +39,9 @@ class UserService(object):
                 users = User.objects.all()
                 for user in users:
                     user.projs.clear()
-                    user.delete()      
+                    user.delete()
         except Exception as e:
-            print(repr(e))
+            raise CustomAPIException(
+                detail=repr(e))            
         else:
             print("user clear success!")      

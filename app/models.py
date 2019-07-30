@@ -6,6 +6,7 @@ from rest_framework import serializers
 
 
 class SysUser(AbstractUser):
+    role = models.CharField(max_length=10)
     pass
 
     class Meta:
@@ -24,8 +25,13 @@ class SysUserSimpleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SysUser
-        fields = ('username', 'first_name', 'last_name',
-                  'email', 'title', 'full_name')
+        fields = (
+            'username', 
+            'first_name', 
+            'last_name',
+            'email',  
+            'full_name',
+            'role')
 
     def get_full_name(self, obj):
         index = obj.email.find('@')

@@ -1,6 +1,7 @@
 from django.db import transaction
 from ..cust_models.proj import *
-
+from ..library.exceptions import CustomAPIException
+from rest_framework import status
 
 class ProjService(object):
     @staticmethod
@@ -17,7 +18,8 @@ class ProjService(object):
                     item.save()
                     i = i + 1
         except Exception as e:
-            print(repr(e))
+            raise CustomAPIException(
+                detail=repr(e))             
         else:
             print("proj init success!")
 
@@ -30,6 +32,7 @@ class ProjService(object):
                     proj.users.clear()
                     proj.delete()      
         except Exception as e:
-            print(repr(e))
+            raise CustomAPIException(
+                detail=repr(e))            
         else:
             print("proj clear success!")                

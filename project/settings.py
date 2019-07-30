@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from datetime import datetime, timedelta
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders',
     'app',
 ]
 
@@ -49,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',    
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -64,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.static',
             ],
         },
     },
@@ -123,5 +127,72 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+# STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+FILE_PATH = os.path.join(BASE_DIR, 'static')
+
+STATIC_ROOT = FILE_PATH
+STATICFILES_DIRS = (
+    # ('css',os.path.join(STATIC_ROOT,'css').replace('\\','/')),
+    # ('js',os.path.join(STATIC_ROOT,'js').replace('\\','/')),
+    ('img',os.path.join(STATIC_ROOT,'img').replace('\\','/')),
+    # ('upload',os.path.join(STATIC_ROOT,'upload').replace('\\','/')),  
+)
+
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'app.SysUser'
+
+# Configure the authentication in Django Rest Framework to be JWT
+# http://www.django-rest-framework.org/
+REST_FRAMEWORK = {
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated'
+    # ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
+    ),
+    'EXCEPTION_HANDLER': 'app.library.error.custom_exception_handler'
+}
+
+# Configure the JWTs to expire after 1 hour, and allow users to refresh near-expiration tokens
+# https://getblimp.github.io/django-rest-framework-jwt/
+JWT_AUTH = {
+    # If the secret is wrong, it will raise a jwt.DecodeError telling you as such. You can still get at the payload by setting the JWT_VERIFY to False.
+    'JWT_VERIFY': True,
+
+    # You can turn off expiration time verification by setting JWT_VERIFY_EXPIRATION to False.
+    # If set to False, JWTs will last forever meaning a leaked token could be used by an attacker indefinitely.
+    'JWT_VERIFY_EXPIRATION': True,
+
+    # This is an instance of Python's datetime.timedelta. This will be added to datetime.utcnow() to set the expiration time.
+    # Default is datetime.timedelta(seconds=300)(5 minutes).
+    'JWT_EXPIRATION_DELTA': timedelta(hours=1),
+
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(hours=1),
+
+    # 'JWT_AUTH_HEADER_PREFIX': 'JWT',
+    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+
+    'JWT_PAYLOAD_HANDLER': 'app.cust_services.jwt.jwt_payload_handler',
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'app.cust_services.jwt.jwt_response_payload_handler',
+}
+
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:4200",
+    "http://localhost:4201"
+]
+
+# allowed to be included in cross-site HTTP requests
+CORS_ALLOW_CREDENTIALS = True  
+
+
+ATT_TYPES = os.environ.get('ATT_TYPES', ['.jpg', '.gif', '.png', '.jepg', '.bmp'])
+ATT_SIZE_LIMIT = os.environ.get("ATT_LIMIT", 5 * 1024 * 1024)
+
+# 當網址不math時, HTTP redirect結尾自動加'/'
+# APPEND_SLASH = True # default True

@@ -16,9 +16,28 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
+# from django.conf.urls.static import static
+
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns 
+from django.contrib import staticfiles 
+from django.conf import settings
+
+from rest_framework_jwt.views import obtain_jwt_token
+from rest_framework_jwt.views import refresh_jwt_token
+from rest_framework_jwt.views import verify_jwt_token
+
+jwtpatterns = [
+    url(r'^jwt/refresh-token/', refresh_jwt_token, name='refresh_jwt_token'),
+    url(r'^jwt/api-token-verify/', verify_jwt_token, name='verify_jwt_token'),
+    url(r'^jwt/api-token-auth/', obtain_jwt_token, name='obtain_jwt_token'),
+]
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('api/', include('app.urls')),
     url(r'api/', include("app.urls")),
 ]
+urlpatterns += jwtpatterns
+urlpatterns += staticfiles_urlpatterns()
+
+# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

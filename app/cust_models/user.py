@@ -1,7 +1,7 @@
 from django.db import models
 from rest_framework import serializers
-from .dept import Dept
-from .proj import Proj
+from .dept import Dept, DeptSerializer
+from .proj import Proj, ProjSerializer
 
 
 class User(models.Model):
@@ -9,7 +9,7 @@ class User(models.Model):
     name = models.CharField(max_length=45)
     hight = models.IntegerField(default=0)
     birthday = models.DateField()
-    photo = models.CharField(max_length=100)
+    photo = models.CharField(max_length=100, null=True, blank=True)
     dept = models.ForeignKey(
         Dept,
         on_delete=models.CASCADE,
@@ -41,20 +41,37 @@ class UserProjMapping(models.Model):
 
 class UserSerializer(serializers.ModelSerializer):
     dept = serializers.PrimaryKeyRelatedField(
-        read_only=True,
-        many=False)
+        read_only=False,
+        many=False,
+        queryset=Dept.objects.all())
     projs = serializers.PrimaryKeyRelatedField(
-        read_only=True,
-        many=True)
+        read_only=False,
+        many=True,
+        queryset=Proj.objects.all())     
+    # dept = serializers.PrimaryKeyRelatedField(
+    #     read_only=True,
+    #     many=False)
+    # projs = serializers.PrimaryKeyRelatedField(
+    #     read_only=True,
+    #     many=True)
 
     class Meta:
         model = User
         fields = "__all__"
+class UserWriteSerializer(serializers.ModelSerializer):   
+    # projs = serializers.PrimaryKeyRelatedField(
+    #     many=True, 
+    #     read_only=False, 
+    #     queryset=Proj.objects.all())
 
+    class Meta:
+        model = User
+        fields = "__all__"
 
 class UserSimpleSerializer(serializers.ModelSerializer):
     pass
 
     class Meta:
         model = User
-        exclude = ("hight", "photo",)
+        exclude = ("hight",)
+        # exclude = ("hight", "photo",)

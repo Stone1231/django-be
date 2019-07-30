@@ -17,9 +17,7 @@ class InitAPIView(APIView):
                 break
             # if case('all'):  # default, could also just omit condition or 'if True'
             else:
-                DeptService.init_data()
-                ProjService.init_data()
-                UserService.init_data()
+                InitService.init_data()
                 break
         return Response(status=204)
 
@@ -36,8 +34,6 @@ class InitAPIView(APIView):
                 break
             # if case('all'):  # default, could also just omit condition or 'if True'
             else:
-                UserService.clear_data()
-                DeptService.clear_data()
-                ProjService.clear_data()
+                InitService.clear_data()
                 break
         return Response(status=204)    

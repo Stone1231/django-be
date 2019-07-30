@@ -1,6 +1,7 @@
 from django.db import transaction
 from ..cust_models.dept import *
-
+from ..library.exceptions import CustomAPIException
+from rest_framework import status
 
 class DeptService(object):
     @staticmethod
@@ -17,7 +18,8 @@ class DeptService(object):
                     item.save()
                     i = i + 1
         except Exception as e:
-            print(repr(e))
+            raise CustomAPIException(
+                detail=repr(e))             
         else:
             print("dept init success!")
 
@@ -27,6 +29,7 @@ class DeptService(object):
             with transaction.atomic():
                 Dept.objects.all().delete()     
         except Exception as e:
-            print(repr(e))
+            raise CustomAPIException(
+                detail=repr(e))            
         else:
             print("dept clear success!")              
