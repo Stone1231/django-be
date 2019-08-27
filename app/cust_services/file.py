@@ -50,6 +50,9 @@ class FileService(object):
     def clear(folder):
         folder_path = os.path.join(settings.FILE_PATH, folder)
 
+        if not os.path.exists(folder_path):
+            return
+
         for the_file in os.listdir(folder_path):
             file_path = os.path.join(folder_path, the_file)
             try:
