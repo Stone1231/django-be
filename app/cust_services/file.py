@@ -18,10 +18,10 @@ class FileService(object):
                 detail="Oops, the file is too large ({0})".format(file_obj.size),
                 status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
-        dir_name = os.path.join(settings.FILE_PATH, folder)
+        folder_path = os.path.join(settings.FILE_PATH, folder)
 
-        if not os.path.exists(dir_name):
-            os.mkdir(dir_name)
+        if not os.path.exists(folder_path):
+            os.mkdir(folder_path)
 
         sep_index = file_obj.name.rfind(os.sep)
         file_origin_name = file_obj.name if sep_index < 0 else file_obj.name[
@@ -38,7 +38,7 @@ class FileService(object):
             file_origin_name[: ext_index],
             datetime.datetime.now().timestamp(),
             ext_name)
-        full_name = os.path.join(dir_name, file_name)
+        full_name = os.path.join(folder_path, file_name)
 
         with open(full_name, 'wb+') as destination:
             for chunk in file_obj.chunks():
@@ -49,6 +49,7 @@ class FileService(object):
     @staticmethod
     def clear(folder):
         folder_path = os.path.join(settings.FILE_PATH, folder)
+
         for the_file in os.listdir(folder_path):
             file_path = os.path.join(folder_path, the_file)
             try:
