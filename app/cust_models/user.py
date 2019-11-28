@@ -1,7 +1,7 @@
 from django.db import models
 from rest_framework import serializers
-from .dept import Dept, DeptSerializer
-from .proj import Proj, ProjSerializer
+from .dept import Dept
+from .proj import Proj
 
 
 class User(models.Model):
@@ -47,7 +47,7 @@ class UserSerializer(serializers.ModelSerializer):
     projs = serializers.PrimaryKeyRelatedField(
         read_only=False,
         many=True,
-        queryset=Proj.objects.all())     
+        queryset=Proj.objects.all())
     # dept = serializers.PrimaryKeyRelatedField(
     #     read_only=True,
     #     many=False)
@@ -58,15 +58,18 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = "__all__"
-class UserWriteSerializer(serializers.ModelSerializer):   
+
+
+class UserWriteSerializer(serializers.ModelSerializer):
     # projs = serializers.PrimaryKeyRelatedField(
-    #     many=True, 
-    #     read_only=False, 
+    #     many=True,
+    #     read_only=False,
     #     queryset=Proj.objects.all())
 
     class Meta:
         model = User
         fields = "__all__"
+
 
 class UserSimpleSerializer(serializers.ModelSerializer):
     pass
