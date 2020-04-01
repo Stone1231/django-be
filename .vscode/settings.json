@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/Users/Stone/.virtualenvs/django-be",
+    "python.pythonPath": "E:\\.pyenv\\Envs\\dj-be\\Scripts\\python.exe",
     "python.formatting.provider": "autopep8",
     "python.testing.unittestArgs": [
         "-v",
