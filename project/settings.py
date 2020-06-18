@@ -51,7 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',    
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -134,8 +134,8 @@ STATIC_ROOT = FILE_PATH
 STATICFILES_DIRS = (
     # ('css',os.path.join(STATIC_ROOT,'css').replace('\\','/')),
     # ('js',os.path.join(STATIC_ROOT,'js').replace('\\','/')),
-    ('img',os.path.join(STATIC_ROOT,'img').replace('\\','/')),
-    # ('upload',os.path.join(STATIC_ROOT,'upload').replace('\\','/')),  
+    ('img', os.path.join(STATIC_ROOT, 'img').replace('\\', '/')),
+    # ('upload',os.path.join(STATIC_ROOT,'upload').replace('\\','/')),
 )
 
 # MEDIA_URL = '/media/'
@@ -183,15 +183,17 @@ JWT_AUTH = {
 }
 
 CORS_ORIGIN_WHITELIST = [
+    "http://localhost:3000",
     "http://localhost:4200",
     "http://localhost:4201"
 ]
 
 # allowed to be included in cross-site HTTP requests
-CORS_ALLOW_CREDENTIALS = True  
+CORS_ALLOW_CREDENTIALS = True
 
 
-ATT_TYPES = os.environ.get('ATT_TYPES', ['.jpg', '.gif', '.png', '.jepg', '.bmp'])
+ATT_TYPES = os.environ.get(
+    'ATT_TYPES', ['.jpg', '.gif', '.png', '.jepg', '.bmp'])
 ATT_SIZE_LIMIT = os.environ.get("ATT_LIMIT", 5 * 1024 * 1024)
 
 # 當網址不math時, HTTP redirect結尾自動加'/'

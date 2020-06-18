@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "E:\\.pyenv\\Envs\\dj-be\\Scripts\\python.exe",
+    "python.pythonPath": "D:\\.pyenv\\Envs\\sample\\Scripts\\python.exe",
     "python.formatting.provider": "autopep8",
     "python.testing.unittestArgs": [
         "-v",
